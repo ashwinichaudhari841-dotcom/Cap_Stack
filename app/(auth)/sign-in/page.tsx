@@ -1,0 +1,61 @@
+"use client"
+
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { Topbar } from "@/components/topbar"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { useAppState } from "@/hooks/use-app-state"
+
+export default function SignInPage() {
+  const { actions } = useAppState()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const router = useRouter()
+
+  return (
+    <main>
+      <Topbar />
+      <div className="mx-auto max-w-md px-4 py-10">
+        <Card>
+          <CardHeader>
+            <CardTitle>Sign in</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            </div>
+            <Button
+              className="w-full"
+              onClick={() => {
+                actions.signIn(email, password)
+                router.push("/profile")
+              }}
+            >
+              Continue
+            </Button>
+            <p className="text-center text-sm text-muted-foreground">
+              Don&apos;t have an account?{" "}
+              <a className="text-primary underline" href="/sign-up">
+                Sign up
+              </a>
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    </main>
+  )
+}
